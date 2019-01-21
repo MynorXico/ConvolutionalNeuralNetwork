@@ -307,3 +307,59 @@ dA, dW, db = conv_backward(Z, cache_conv)
 print("dA_mean =", np.mean(dA))
 print("dW_mean =", np.mean(dW))
 print("db_mean =", np.mean(db))
+"""
+
+
+
+def create_mask_from_window(x):
+    """
+    Creates a mask from an input matrix x, to identify the max entry of x.
+    
+    Arguments:
+    x -- Array of shape (f, f)
+    
+    Returns:
+    mask -- Array of the same shape as window, contains a True at the position corresponding to the max entry of x.
+    """
+    
+    mask = (x == np.max(x))
+    
+    return mask
+
+""" Testing mask
+np.random.seed(1)
+x = np.random.randn(2,3)
+mask = create_mask_from_window(x)
+print("x = ", x)
+print("mask = ", mask)
+"""
+
+def distribute_value(dz, shape):
+    """
+    Distributes the input value in the matrix of dimension shape
+    
+    Arguments:
+    dz -- input scalar
+    shape -- the shape (n_H, n_W) of the output matrix for which we want to distribute the value of dz
+    
+    Returns:
+    a -- Array of size (n_H, n_W) for which we distributed the value of dz
+    """
+    
+    # Retrieve dimensions from shape (≈1 line)
+    (n_H, n_W) = shape
+    
+    # Compute the value to distribute on the matrix
+    average = dz/(n_H+ n_W)
+    
+    # Create a matrix where every entry is the "average" value (≈1 line)
+    a = np.ones((n_H, n_W))*average
+    
+    return a
+
+"""
+Test for mean matrix mask
+a = distribute_value(2, (2,2))
+print('distributed value =', a)
+"""
+
